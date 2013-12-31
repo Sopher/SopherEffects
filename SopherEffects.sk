@@ -1,0 +1,461 @@
+# Author: Sopher - http://github.com/Sopher
+# Script name: Sopher Effects v1.0
+# Skript version: 2.0.2
+# Requirements: SkriptPlus 1.4 and Craftbukkit 1.7.2
+# License: Sopher Close Script License v1.0
+# URL: https://github.com/Sopher/sopherclosescriptlicense
+
+# CONFIGURATION // KONFIGURACJA
+options:
+	# Languages: eng/ pl
+	# Jezyki: eng/ pl
+	lang: eng
+	
+	# Power effects.
+	# Sila efektów.
+	power: 5
+
+# SCRIPT CODE // KOD SKRYPTU.
+command /sophereffects [<text>] [<text>] [<text>] [<integer>]:
+	aliases: se, efekt, effects
+	trigger:
+		if arg 1 is not set:
+			if {sopher.effects.lang} is "eng":
+				send "[&3SE&f] &aCOMMANDS"
+				send "&e/se on &7- turn on effects."
+				send "&e/se off &7- turn off effects."
+				send "&e/se add &7- add effects."
+				send "&e/se remove &7- remove effects."
+				send "&e/se list &7- list of effects."
+				send "&e/se tp &7- teleport to effect."
+				send "&e/se use &7- disposable used of effects."
+				send "&e/se move &7- effects when walking."
+				send "&e/se troll &7- that command is crashing player client."
+			else if {sopher.effects.lang} is "pl":
+				send "[&3SE&f] &aKOMENDY"
+				send "&e/se wlacz &7- wlaczanie efektow."
+				send "&e/se wylacz &7- wylaczanie efektow."
+				send "&e/se dodaj &7- dodawanie efektu."
+				send "&e/se usun &7- usuwanie efektu."
+				send "&e/se lista &7- lista efektow."
+				send "&e/se tp &7- teleportacja do efektu."
+				send "&e/se uzyj &7- jednorazowe uzycie efektu."
+				send "&e/se ruch &7- efekty przy chodzeniu."
+				send "&e/se troll &7- scrashowanie klienta gracza."
+			stop
+		if arg 1 is "help" or "pomoc":
+			if {sopher.effects.lang} is "eng":
+				send "[&3SE&f] &aCOMMANDS"
+				send "&e/se on &7- turn on effects."
+				send "&e/se off &7- turn off effects."
+				send "&e/se add &7- add effects."
+				send "&e/se remove &7- remove effects."
+				send "&e/se list &7- list of effects."
+				send "&e/se tp &7- teleport to effect."
+				send "&e/se use &7- disposable used of effects."
+				send "&e/se move &7- effects when walking."
+				send "&e/se troll &7- that command is crashing player client."
+			else if {sopher.effects.lang} is "pl":
+				send "[&3SE&f] &aKOMENDY"
+				send "&e/se wlacz &7- wlaczanie efektow."
+				send "&e/se wylacz &7- wylaczanie efektow."
+				send "&e/se dodaj &7- dodawanie efektu."
+				send "&e/se usun &7- usuwanie efektu."
+				send "&e/se lista &7- lista efektow."
+				send "&e/se tp &7- teleportacja do efektu."
+				send "&e/se uzyj &7- jednorazowe uzycie efektu."
+				send "&e/se ruch &7- efekty przy chodzeniu."
+				send "&e/se troll &7- scrashowanie klienta gracza."
+			stop
+		if arg 1 is "on" or "wlacz":
+			if player has permission "sopher.effects.*" or "sopher.effects.on":
+				if {sopher.effects.status} is true:
+					if {sopher.effects.lang} is "eng":
+						send "[&3SE&f] &cEffects are already on."
+					else if {sopher.effects.lang} is "pl":
+						send "[&3SE&f] &cEfekty sa juz wlaczone."
+				else:
+					set {sopher.effects.status} to true
+					if {sopher.effects.lang} is "eng":
+						send "[&3SE&f] &aEffects were on"
+					else if {sopher.effects.lang} is "pl":
+						send "[&3SE&f] &aEfekty zostaly wlaczone."
+					stop
+			else:
+				if {sopher.effects.lang} is "eng":
+					send "[&3SE&f] &cYou have don't permissions to make it."
+				else if {sopher.effects.lang} is "pl":
+					send "[&3SE&f] &cNie masz uprawnien, aby to zrobic."
+				stop
+		if arg 1 is "off" or "wylacz":
+			if player has permission "sopher.effects.*" or "sopher.effects.off":
+				if {sopher.effects.status} is false:
+					if {sopher.effects.lang} is "eng":
+						send "[&3SE&f] &cEffects are already off."
+					else if {sopher.effects.lang} is "pl":
+						send "[&3SE&f] &cEfekty sa juz wylaczone."
+				else:
+					set {sopher.effects.status} to false
+					if {sopher.effects.lang} is "eng":
+						send "[&3SE&f] &aEffects were off."
+					else if {sopher.effects.lang} is "pl":
+						send "[&3SE&f] &aEfekty zostaly wylaczone."
+					stop
+			else:
+				if {sopher.effects.lang} is "eng":
+					send "[&3SE&f] &cYou have don't permissions to make it."
+				else if {sopher.effects.lang} is "pl":
+					send "[&3SE&f] &cNie masz uprawnien, aby to zrobic."
+				stop
+		if arg 1 is "add" or "dodaj":
+			if player has permission "sopher.effects.*" or "sopher.effects.add":
+				if arg 2 is set:
+					if arg 3 is set:
+						set {sopher.effects.location.%arg 2%::%arg 3%} to location of player
+						if {sopher.effects.lang} is "eng":
+							send "[&3SE&f] &aAdded effect %arg 2% - name %arg 3%"
+						else if {sopher.effects.lang} is "pl":
+							send "[&3SE&f] &aDodales efekt %arg 2% - nazwa %arg 3%."
+						stop
+					else:
+						if {sopher.effects.lang} is "eng":
+							send "[&3SE&f] &cIncorrect command! Use - &e/se add <effect> <name>"
+						else if {sopher.effects.lang} is "pl":
+							send "[&3SE&f] &cNieprawidlowa komenda! Uzyj - &e/se dodaj <efekt> <nazwa>"
+						stop
+				else:
+					if {sopher.effects.lang} is "eng":
+						send "[&3SE&f] &cIncorrect command! Use - &e/se add <effect> <name>"
+					else if {sopher.effects.lang} is "pl":
+						send "[&3SE&f] &cNieprawidlowa komenda! Uzyj - &e/se dodaj <efekt> <nazwa>"
+					stop
+			else:
+				if {sopher.effects.lang} is "eng":
+					send "[&3SE&f] &cYou have don't permissions to make it."
+				else if {sopher.effects.lang} is "pl":
+					send "[&3SE&f] &cNie masz uprawnien, aby to zrobic."
+				stop
+		if arg 1 is "remove" or "usun":
+			if player has permission "sopher.effects.*" or "sopher.effects.remove":
+				if arg 2 is set:
+					if arg 3 is set:
+						if {sopher.effects.location.%arg 2%::%arg 3%} is set:
+							delete {sopher.effects.location.%arg 2%::%arg 3%}
+							if {sopher.effects.lang} is "eng":
+								send "[&3SE&f] &aRemoved effect %arg 2% - name %arg 3%"
+							else if {sopher.effects.lang} is "pl":
+								send "[&3SE&f] &aUsunales efekt %arg 2% - nazwa %arg 3%."
+							stop
+						else:
+							if {sopher.effects.lang} is "eng":
+								send "[&3SE&f] &cEffect not found. Check the name."
+							else if {sopher.effects.lang} is "pl":
+								send "[&3SE&f] &cNie znaleziono efektu. Sprawdz czy wpisales prawidlowa nazwa."
+							stop
+					else:
+						if {sopher.effects.lang} is "eng":
+							send "[&3SE&f] &cIncorrect command! Use - &e/se remove <effect> <name>"
+						else if {sopher.effects.lang} is "pl":
+							send "[&3SE&f] &cNieprawidlowa komenda! Uzyj - &e/se usun <efekt> <nazwa>"
+						stop
+				else:
+					if {sopher.effects.lang} is "eng":
+						send "[&3SE&f] &cIncorrect command! Use - &e/se remove <effect> <name>"
+					else if {sopher.effects.lang} is "pl":
+						send "[&3SE&f] &cNieprawidlowa komenda! Uzyj - &e/se usun <efekt> <nazwa>"
+					stop			
+			else:
+				if {sopher.effects.lang} is "eng":
+					send "[&3SE&f] &cYou have don't permissions to make it."
+				else if {sopher.effects.lang} is "pl":
+					send "[&3SE&f] &cNie masz uprawnien, aby to zrobic."
+				stop
+		if arg 1 is "tp":
+			if player has permission "sopher.effects.*" or "sopher.effects.tp":
+				if arg 2 is set:
+					if arg 3 is set:
+						if {sopher.effects.location.%arg 2%::%arg 3%} is set:
+							teleport player to {sopher.effects.location.%arg 2%::%arg 3%}
+							if {sopher.effects.lang} is "eng":
+								send "[&3SE&f] &aYou have been teleported to the effect %arg 2% - name %arg 3%"
+							else if {sopher.effects.lang} is "pl":
+								send "[&3SE&f] &aZostales teleportowany do efektu %arg 2% - nazwa %arg 3%."
+							stop
+						else:
+							if {sopher.effects.lang} is "eng":
+								send "[&3SE&f] &cEffect not found. Check the name."
+							else if {sopher.effects.lang} is "pl":
+								send "[&3SE&f] &cNie znaleziono efektu. Sprawdz czy wpisales prawidlowy nazwa."
+							stop
+					else:
+						if {sopher.effects.lang} is "eng":
+							send "[&3SE&f] &cIncorrect command! Use - &e/se tp <effect> <name>"
+						else if {sopher.effects.lang} is "pl":
+							send "[&3SE&f] &cNieprawidlowa komenda! Uzyj - &e/se tp <efekt> <nazwa>"
+						stop
+				else:
+					if {sopher.effects.lang} is "eng":
+						send "[&3SE&f] &cIncorrect command! Use - &e/se tp <effect> <name>"
+					else if {sopher.effects.lang} is "pl":
+						send "[&3SE&f] &cNieprawidlowa komenda! Uzyj - &e/se tp <efekt> <nazwa>"
+					stop
+			else:
+				if {sopher.effects.lang} is "eng":
+					send "[&3SE&f] &cYou have don't permissions to make it."
+				else if {sopher.effects.lang} is "pl":
+					send "[&3SE&f] &cNie masz uprawnien, aby to zrobic."
+				stop
+		if arg 1 is "list" or "lista":
+			if player has permission "sopher.effects.*" or "sopher.effects.list":
+				if arg 2 is "check" or "sprawdz":
+					send "[&3SE&f] &aEffects: &7hugeexplosion, largeexplode, bubble, suspended, fireworksSpark, depthsuspend, townaura, crit, magicCrit, smoke, mobSpell, mobSpellAmbient, spell, instantSpell, witchMagic, note, portal, enchantmenttable, explode, flame, lava, footstep, splash, largesmoke, cloud, reddust, snowballpoof, dripWater, dripLava, snowshovel, slime, heart, angryVillager, happyVillager."
+					stop
+				if arg 2 is "hugeexplosion" or "largeexplode" or "bubble" or "suspended" or "fireworksSpark" or "depthsuspend" or "townaura" or "crit" or "magicCrit" or "smoke" or "mobSpell" or "mobSpellAmbient" or "spell" or "instantSpell" or "witchMagic" or "note" or "portal" or "enchantmenttable" or "explode" or "flame" or "lava" or "footstep" or "splash" or "largesmoke" or "cloud" or "reddust" or "snowballpoof" or "dripWater" or "dripLava" or "snowshovel" or "slime" or "heart" or "angryVillager" or "happyVillager":
+					if arg 3 is set:
+						if {sopher.effects.location.%arg 2%::%arg 3%} is set:
+							if {sopher.effects.lang} is "eng":
+								send "[&3SE&f] &aCoordinates the effect '%arg 2%' of name '%arg 3%': &7%{sopher.effects.location.%arg 2%::%arg 3%}%"
+							else if {sopher.effects.lang} is "pl":
+								send "[&3SE&f] &aKoordynaty efektu '%arg 2%' o numerze '%arg 3%': &7%{sopher.effects.location.%arg 2%::%arg 3%}%"
+							stop
+						else:
+							if {sopher.effects.lang} is "eng":
+								send "[&3SE&f] &c"
+							else if {sopher.effects.lang} is "pl":
+								send "[&3SE&f] &cNie znaleziono efektu o podanym numerze!"
+							stop
+					if size of {sopher.effects.location.%arg 2%::*} isn't 0:
+						set {_a} to 0
+						set {_b} to size of {sopher.effects.location.%arg 2%::*}
+						loop {_b} times:
+							add 1 to {_a}
+							add {_a} to {_b::*}
+						set {_c} to "%{_b::*}%"
+						replace all " and" with "," in {_c}
+						if {sopher.effects.lang} is "eng":
+							send "[&3SE&f] &aNumber of effect %arg 2%: &7%{_c}%"
+							send "[&3SE&f] &aUse this command &e/se list <effect> <name> &ato see the effect of coordinates."
+						else if {sopher.effects.lang} is "pl":
+							send "[&3SE&f] &aNumery efektu %arg 2%: &7%{_c}%"
+							send "[&3SE&f] &aUzyj komendy &e/se list <efekt> <nazwa> &aaby zobaczyc koordynaty efektu."
+						stop
+					else:
+						if {sopher.effects.lang} is "eng":
+							send "[&3SE&f] &cEffect '%arg 2%' has not been set"
+						else if {sopher.effects.lang} is "pl":
+							send "[&3SE&f] &cEfekt '%arg 2%' nie zostal ustawiony."
+						stop					
+				else if arg 2 is not set:
+					set {_a} to 0
+					set {_b} to size of {sopher.effects.list::*}
+					loop {_b} times:
+						add 1 to {_a}
+						set {_c} to {sopher.effects.list::%{_a}%}
+						if size of {sopher.effects.location.%{_c}%::*} is greater than 0:
+							add {_c} to {_d::*}
+					set {_e} to "%{_d::*}%"
+					replace all " and" with "," in {_e}
+					if {sopher.effects.lang} is "eng":
+						replace all "<none>" with "not found" in {_e}
+						send "[&3SE&f] &6Effects which are set: &7%{_e}%"
+					else if {sopher.effects.lang} is "pl":
+						replace all "<none>" with "nie znaleziono" in {_e}
+						send "[&3SE&f] &6Efekty, ktore sa ustawione: &7%{_e}%"
+					stop
+				else if arg 2 is set:
+					if {sopher.effects.lang} is "eng":
+						send "[&3SE&f] &cThis effect does not exist. Use &e/se list check &cto see a list of effects."
+					else if {sopher.effects.lang} is "pl":
+						send "[&3SE&f] &cNie znaleziono efektu. Uzyj &e/se lista sprawdz &caby zobaczyc liste efektow."
+					stop
+			else:
+				if {sopher.effects.lang} is "eng":
+					send "[&3SE&f] &cYou have don't permissions to make it."
+				else if {sopher.effects.lang} is "pl":
+					send "[&3SE&f] &cNie masz uprawnien, aby to zrobic."
+				stop
+		if arg 1 is "move" or "ruch" or "walk":
+			if player has permission "sopher.effects.*" or "sopher.effects.move":
+				if arg 2 is "hugeexplosion" or "largeexplode" or "bubble" or "suspended" or "fireworksSpark" or "depthsuspend" or "townaura" or "crit" or "magicCrit" or "smoke" or "mobSpell" or "mobSpellAmbient" or "spell" or "instantSpell" or "witchMagic" or "note" or "portal" or "enchantmenttable" or "explode" or "flame" or "lava" or "footstep" or "splash" or "largesmoke" or "cloud" or "reddust" or "snowballpoof" or "dripWater" or "dripLava" or "snowshovel" or "slime" or "heart" or "angryVillager" or "happyVillager":
+					set {sopher.effects.player.movement.type::%player%} to "%arg 2%"	
+					send "[&3SE&f] &aWlaczyles efekt '%arg 2%' przy chodzeniu."
+					stop
+				else:
+					if {sopher.effects.player.movement.type::%player%} is "hugeexplosion" or "largeexplode" or "bubble" or "suspended" or "fireworksSpark" or "depthsuspend" or "townaura" or "crit" or "magicCrit" or "smoke" or "mobSpell" or "mobSpellAmbient" or "spell" or "instantSpell" or "witchMagic" or "note" or "portal" or "enchantmenttable" or "explode" or "flame" or "lava" or "footstep" or "splash" or "largesmoke" or "cloud" or "reddust" or "snowballpoof" or "dripWater" or "dripLava" or "snowshovel" or "slime" or "heart" or "angryVillager" or "happyVillager":
+						send "[&3SE&f] &cWylaczyles efekt '%{sopher.effects.player.movement.type::%player%}%' przy chodzeniu."
+						set {sopher.effects.player.movement.type::%player%} to 0
+						stop
+					if {sopher.effects.lang} is "eng":
+						send "[&3SE&f] &cIncorrect command! Use - &e/se move <effect>"
+						send "[&3SE&f] &aUse command &e/se list check &ato see list of effects."
+					else if {sopher.effects.lang} is "pl":
+						send "[&3SE&f] &cNieprawidlowa komenda! Uzyj - &e/se ruch <efekt>"
+						send "[&3SE&f] &aUzyj komendy &e/se lista sprawdz &aaby zobaczysz liste efektow."
+					stop
+			else:
+				if {sopher.effects.lang} is "eng":
+					send "[&3SE&f] &cYou have don't permissions to make it."
+				else if {sopher.effects.lang} is "pl":
+					send "[&3SE&f] &cNie masz uprawnien, aby to zrobic."
+				stop
+		if arg 1 is "use" or "uzyj":
+			if player has permission "sopher.effects.*" or "sopher.effects.use":
+				if arg 2 is set:
+					if arg 3 is set:
+						if arg 4 is set:
+							set {_a} to "%arg 2%"
+							set {_b} to "%arg 3%"
+							set {_c} to "%arg 4%" parsed as number
+							if {sopher.effects.lang} is "eng":
+								send "[&3SE&f] &aYou use effect '%{_b}%' with power '%{_c}%' on player '%{_a}%'."
+							else if {sopher.effects.lang} is "pl":
+								send "[&3SE&f] &aUzyles efekt '%{_b}%' o sile '%{_c}%' na graczu '%{_a}%'."
+							execute console command "/sophereffects_use %arg 2% %arg 3% %arg 4%"
+							stop
+						else:
+							if {sopher.effects.lang} is "eng":
+								send "[&3SE&f] &cIncorrect command! Use - &e/se use <player> <effect> <power>"
+							else if {sopher.effects.lang} is "pl":
+								send "[&3SE&f] &cNieprawidlowa komenda! Uzyj - &e/se troll <gracz> <effect> <sila>"
+							stop
+					else:
+						if {sopher.effects.lang} is "eng":
+							send "[&3SE&f] &cIncorrect command! Use - &e/se use <player> <effect> <power>"
+						else if {sopher.effects.lang} is "pl":
+							send "[&3SE&f] &cNieprawidlowa komenda! Uzyj - &e/se troll <gracz> <effect> <sila>"
+						stop
+				else:
+					if {sopher.effects.lang} is "eng":
+						send "[&3SE&f] &cIncorrect command! Use - &e/se use <player> <effect> <power>"
+					else if {sopher.effects.lang} is "pl":
+						send "[&3SE&f] &cNieprawidlowa komenda! Uzyj - &e/se troll <gracz> <effect> <sila>"
+					stop
+			else:
+				if {sopher.effects.lang} is "eng":
+					send "[&3SE&f] &cYou have don't permissions to make it."
+				else if {sopher.effects.lang} is "pl":
+					send "[&3SE&f] &cNie masz uprawnien, aby to zrobic."
+				stop
+		if arg 1 is "troll":
+			if player has permission "sopher.effects.*" or "sopher.effects.troll":
+				if arg 2 is set:
+					execute console command "/sophereffects_crash %arg 2%"
+					if {sopher.effects.lang} is "eng":
+						send "[&3SE&f] &aPlayer %arg 2% was trolled!"
+					else if {sopher.effects.lang} is "pl":
+						send "[&3SE&f] &aGracz %arg 2% zostal strollowany!"
+					stop
+				else:
+					if {sopher.effects.lang} is "eng":
+						send "[&3SE&f] &cIncorrect command! Use - &e/se troll <player>"
+					else if {sopher.effects.lang} is "pl":
+						send "[&3SE&f] &cNieprawidlowa komenda! Uzyj - &e/se troll <gracz>"
+					stop
+			else:
+				if {sopher.effects.lang} is "eng":
+					send "[&3SE&f] &cYou have don't permissions to make it."
+				else if {sopher.effects.lang} is "pl":
+					send "[&3SE&f] &cNie masz uprawnien, aby to zrobic."
+				stop
+		if arg 1 is "author" or "autor":
+			if name of player is "MrSopher":
+				send "[&3SE&f] &aServer is running on SopherEffects %{sopher.effects.version}%"
+				stop
+			else:
+				if {sopher.chat.lang} is "eng":
+					send "[&3SE&f] &6Author: &aSopher"
+					send "[&3SE&f] &6Contact: &ahttp://skript.pl/sopher"
+				if {sopher.chat.lang} is "pl":
+					send "[&3SE&f] &6Autor: &aSopher"
+					send "[&3SE&f] &6Kontakt: &ahttp://skript.pl/sopher"
+				stop
+					
+on any movement:
+	if {sopher.effects.player.movement::%player%} is 0:
+		stop
+	else:
+		{sopher.effects.status} is true
+		play 1 of effect "%{sopher.effects.player.movement.type::%player%}%" with data 1 at location of event-player			
+			
+every 10 ticks:
+	set {_a} to 0
+	set {_b} to size of {sopher.effects.list::*}
+	loop {_b} times:
+		add 1 to {_a}
+		set {_c} to {sopher.effects.list::%{_a}%}
+		loop {sopher.effects.location.%{_c}%::*}:
+			{sopher.effects.status} is true
+			play {@power} of effect "%{_c}%" with data 1 at loop-value
+			
+command /sophereffects_crash <player>:
+	executable by: console
+	trigger:
+		play 1 of effect "iconcrack_*" with data 1 at location of player-argument
+		
+command /sophereffects_use <player> <text> <integer>:
+	executable by: console
+	trigger:
+		set {_x} to arg 3
+		play {_x} of effect "%arg 2%" with data 1 at location of player-argument
+			
+on join:
+	player is op
+	if {sopher.effects.update} is true:
+		wait 2 seconds
+		send "[&3SopherEffects&f] &cNew version is available."
+		send "[&3SopherEffects&f] &cDownload it on: http://skript.pl/sopher/se"
+
+on script load:
+	set {sopher.effects.version} to "1.0"
+	set {_x} to text from url "http://www.skript.pl/sopher/sophereffects.html"
+	if {sopher.effects.version} isn't {_x}:
+		set {sopher.effects.update} to true
+	else:
+		set {sopher.effects.update} to false
+	set {sopher.effects.lang} to "{@lang}"
+	if {sopher.effects.lang} is "eng" or "pl":
+		send "[SopherEffects] Successfully loaded. Version: %{sopher.effects.version}%" to console
+		send "[SopherEffects] Developed by Sopher." to console
+		if {sopher.effects.update} is true:
+			send "[SopherEffects] New version is available." to console
+			send "[SopherEffects] Download it on: http://skript.pl/sopher/se" to console
+	else:
+		send "[SopherEffects] Unsuccessfully loaded. Version: %{sopher.effects.version}%" to console
+		send "[SopherEffects] Error: wrong language name." to console
+		send "[SopherEffects] Developed by Sopher." to console
+	if {sopher.effects.status} is not set:
+		set {sopher.effects.status} to true
+	set {sopher.effects.list::1} to "heart"
+	set {sopher.effects.list::2} to "lava"
+	set {sopher.effects.list::3} to "hugeexplosion"
+	set {sopher.effects.list::4} to "largeexplode"
+	set {sopher.effects.list::5} to "fireworksSpark"
+	set {sopher.effects.list::6} to "bubble"
+	set {sopher.effects.list::7} to "suspended"
+	set {sopher.effects.list::8} to "depthsuspend"
+	set {sopher.effects.list::9} to "townaura"
+	set {sopher.effects.list::10} to "crit"
+	set {sopher.effects.list::11} to "magicCrit"
+	set {sopher.effects.list::12} to "smoke"
+	set {sopher.effects.list::13} to "mobSpell"
+	set {sopher.effects.list::14} to "mobSpellAmbient"
+	set {sopher.effects.list::15} to "spell"
+	set {sopher.effects.list::16} to "instantSpell"
+	set {sopher.effects.list::17} to "witchMagic"
+	set {sopher.effects.list::18} to "note"
+	set {sopher.effects.list::19} to "portal"
+	set {sopher.effects.list::20} to "enchantmenttable"
+	set {sopher.effects.list::21} to "explode"
+	set {sopher.effects.list::22} to "flame"
+	set {sopher.effects.list::23} to "footstep"
+	set {sopher.effects.list::24} to "splash"
+	set {sopher.effects.list::25} to "largesmoke"
+	set {sopher.effects.list::26} to "cloud"
+	set {sopher.effects.list::27} to "reddust"
+	set {sopher.effects.list::28} to "snowballpoof"
+	set {sopher.effects.list::29} to "dripWater"
+	set {sopher.effects.list::30} to "dripLava"
+	set {sopher.effects.list::31} to "snowshovel"
+	set {sopher.effects.list::32} to "slime"
+	set {sopher.effects.list::33} to "angryVillager"
+	set {sopher.effects.list::34} to "happyVillager"
